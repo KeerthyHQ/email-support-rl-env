@@ -23,4 +23,4 @@ EMAIL_SCENARIOS = [
         "email": "Can you tell me your working hours?",
         "expected_keywords": ["hours", "time", "available"]
     }
-]
+]                                                                                                                                                                                                                                                     
