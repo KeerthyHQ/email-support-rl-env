@@ -17,4 +17,4 @@ def calculate_reward(email_data,reply):
     if len(reply.strip())<10 :
       reward-=1
 
-    return reward
+    return reward,matches
