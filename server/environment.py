@@ -45,6 +45,18 @@ class EmailEnvironment:
                 done=True,
                 metadata={"error":"environment not initialised"}
             )
+        #stops the step_counts
+        if self._state.step_count >= 3:
+
+            return EmailObservation(
+            email="Issue Resolved. Please call reset().",
+            reward=0.0,
+            done=True,
+            metadata={
+                "step_count": self._state.step_count,
+                "message": "Issue resolved. Thank you for contacting support."
+            }
+        )
         #increment step count
         self._state.step_count+=1
 
@@ -61,6 +73,10 @@ class EmailEnvironment:
         MAX_STEPS = 3
         done=self._state.step_count >= MAX_STEPS
 
+        #escalation to Human support 
+        if "customer support" in reply.lower():
+            done = True
+
         #if done not true , then mail chain still continues
         if not done:
             followups=self.current_email.get("followups",[])
@@ -72,8 +88,8 @@ class EmailEnvironment:
             
             self._state.email= next_email
               
-       print("STEP:", self._state.step_count)
-       print("EMAIL:", self._state.email)
+        #print("STEP:", self._state.step_count)
+        #print("EMAIL:", self._state.email)
 
         return EmailObservation(
                 email = self._state.email,
@@ -84,7 +100,7 @@ class EmailEnvironment:
                     "email_type":self.current_email.get("type","unknown"),
                     "keyword_matches":matches,
                     "reply_length":len(reply.strip()),
-                     "conversation_history": self._state.conversation_history
+                    "conversation_history": self._state.conversation_history
                     }
             )
     @property

@@ -27,11 +27,16 @@ def calculate_reward(scenario,reply):
       if word in reply_lower:
         reward -=1.5
 
+    #escalation handling
+    if "customer support" in reply_lower:
+      reward-=0.5
+      
     #Bonus for strong responses
     if matches >=2:
       reward+=1.0
 
     #difficulty based scaling 
-     reward += 0.1 * matches * scenario.get("difficulty_multiplier", 1)
+    reward+=0.1*matches*scenario.get("difficulty_multiplier",1)
+    
 
     return reward,matches
