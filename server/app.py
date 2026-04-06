@@ -12,7 +12,7 @@ env = EmailEnvironment()
 def reset():
     return env.reset()
 
-@app.get("/step",response_model=EmailObservation)
+@app.post("/step",response_model=EmailObservation)
 def step(action:EmailAction):
     return env.step(action)
 
