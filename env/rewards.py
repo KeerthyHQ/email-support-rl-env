@@ -19,6 +19,15 @@ def calculate_reward(context, reply):
 
     # bonus for multiple keywords
     if matches >= 2:
+        reward += 1.5
+
+    # repetition penalty
+    if reply in context.get("conversation_history", []):
+        reward -= 0.5
+
+
+    # resolution bonus
+    if any(word in reply for word in ["refund processed", "issue resolved", "we will resolve this"]):
         reward += 1.0
 
     # normalize 

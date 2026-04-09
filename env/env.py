@@ -41,7 +41,8 @@ class EmailEnvironment():
         context = {
             "email": state.email,
             "expected_keywords": state.current_email["expected_keywords"],
-            "difficulty_multiplier": state.current_email["difficulty_multiplier"]
+            "difficulty_multiplier": state.current_email["difficulty_multiplier"],
+            "conversation_history": self._state.conversation_history
         }
 
         reward, matches = calculate_reward(context, reply)
