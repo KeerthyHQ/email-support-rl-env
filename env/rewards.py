@@ -22,15 +22,19 @@ def calculate_reward(context, reply):
         reward += 1.5
 
     # repetition penalty
-    if reply in context.get("conversation_history", []):
+    history = context.get("conversation_history", []) 
+    if history.count(reply) > 1: 
         reward -= 0.5
-
 
     # resolution bonus
     if any(word in reply for word in ["refund processed", "issue resolved", "we will resolve this"]):
         reward += 1.0
+    elif any(word in reply for word in ["refund", "resolve", "assist"]):
+        reward += 0.5
 
     # normalize 
-    reward = min(reward / 3.0, 1.0)
+    
+    reward = min(reward, 3.0)   # raw reward
+    reward = reward / 3.0      
 
     return reward, matches
