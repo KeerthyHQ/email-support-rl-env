@@ -6,7 +6,10 @@ API_BASE_URL = os.getenv("API_BASE_URL")
 API_KEY = os.getenv("API_KEY")
 MODEL_NAME = os.getenv("MODEL_NAME", "gpt-3.5-turbo")
 
-client = OpenAI(base_url=API_BASE_URL,api_key=API_KEY)
+client = None
+
+if API_KEY and API_BASE_URL:
+    client = OpenAI(base_url=API_BASE_URL, api_key=API_KEY)
 
 def log_start():
     print(f"[START] task=email_support env=email-support model={MODEL_NAME}",flush=True)
@@ -23,6 +26,10 @@ def log_end(success, steps, score, rewards):
 
 
 def get_llm_reply(email):
+    #for local testing
+    if client is None:
+        return "Sorry for the issue. We will resolve it."
+        
     try:
         response = client.chat.completions.create(
             model=MODEL_NAME,
