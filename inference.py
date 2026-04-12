@@ -1,49 +1,19 @@
 import os
 import requests
+from openai import OpenAI
 
 
 def log_start():
-    print(f"[START] task=email_support env=email-support model={os.getenv('MODEL_NAME','gpt-3.5-turbo')}", flush=True)
+    print(f"[START] task=email_support env=email-support model={os.environ.get('MODEL_NAME','gpt-3.5-turbo')}", flush=True)
 
 
 def log_step(step, action, reward, done):
-    print(
-        f"[STEP] step={step} action={action} reward={reward:.2f} done={str(done).lower()} error=null",
-        flush=True,
-    )
+    print(f"[STEP] step={step} action={action} reward={reward:.2f} done={str(done).lower()} error=null", flush=True)
 
 
 def log_end(success, steps, score, rewards):
     rewards_str = ",".join([f"{r:.2f}" for r in rewards])
-    print(
-        f"[END] success={str(success).lower()} steps={steps} score={score:.2f} rewards={rewards_str}",
-        flush=True,
-    )
-
-def get_llm_reply(email):
-    try:
-        from openai import OpenAI
-
-        client = OpenAI(
-            base_url=os.environ["API_BASE_URL"],
-            api_key=os.environ["API_KEY"],
-        )
-
-        response = client.chat.completions.create(
-            model=os.environ.get("MODEL_NAME", "gpt-3.5-turbo"),
-            messages=[
-                {"role": "system", "content": "You are a helpful customer support agent."},
-                {"role": "user", "content": f"Customer email: {email}\nWrite a helpful reply."},
-            ],
-            temperature=0.7,
-            max_tokens=100,
-        )
-
-        return response.choices[0].message.content.strip()
-
-    except Exception as e:
-        print(f"[ERROR] LLM call failed: {e}", flush=True)
-        return "Sorry for the inconvenience. We will resolve your issue."
+    print(f"[END] success={str(success).lower()} steps={steps} score={score:.2f} rewards={rewards_str}", flush=True)
 
 
 def run():
@@ -55,6 +25,17 @@ def run():
     success = False
 
     try:
+       
+        API_BASE_URL = os.environ["API_BASE_URL"]
+        API_KEY = os.environ["API_KEY"]
+        MODEL_NAME = os.environ.get("MODEL_NAME", "gpt-3.5-turbo")
+
+      
+        client = OpenAI(
+            base_url=API_BASE_URL,
+            api_key=API_KEY
+        )
+
         # RESET
         res = requests.post("http://127.0.0.1:8000/reset")
         res.raise_for_status()
@@ -63,13 +44,23 @@ def run():
         email = data["observation"]["email"]
         done = False
 
-        # STEP LOOP
         while not done and steps < 3:
             steps += 1
 
-            #  CALL LLM PROXY
-            reply = get_llm_reply(email)
+            #  LLM CALL 
+            response = client.chat.completions.create(
+                model=MODEL_NAME,
+                messages=[
+                    {"role": "system", "content": "You are a helpful customer support agent."},
+                    {"role": "user", "content": f"Customer email: {email}\nWrite a helpful reply."}
+                ],
+                temperature=0.7,
+                max_tokens=100,
+            )
 
+            reply = response.choices[0].message.content.strip()
+
+            # STEP ENV
             res = requests.post(
                 "http://127.0.0.1:8000/step",
                 json={"action": {"reply": reply}},
@@ -86,7 +77,6 @@ def run():
 
             log_step(steps, reply, reward, done)
 
-        # SCORE
         if rewards:
             score = min(sum(rewards) / len(rewards), 1.0)
 
