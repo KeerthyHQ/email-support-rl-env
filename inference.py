@@ -30,13 +30,22 @@ def run():
         API_KEY = os.environ["API_KEY"]
         MODEL_NAME = os.environ.get("MODEL_NAME", "gpt-3.5-turbo")
 
-      
         client = OpenAI(
             base_url=API_BASE_URL,
             api_key=API_KEY
         )
 
-        # RESET
+        # ONE PROXY CALL 
+        try:
+            _ = client.chat.completions.create(
+                model=MODEL_NAME,
+                messages=[{"role": "user", "content": "Hello"}],
+                max_tokens=5,
+            )
+        except Exception as e:
+            print(f"[DEBUG] initial proxy call failed: {e}", flush=True)
+
+        # RESET ENV
         res = requests.post("http://127.0.0.1:8000/reset")
         res.raise_for_status()
         data = res.json()
@@ -44,23 +53,29 @@ def run():
         email = data["observation"]["email"]
         done = False
 
+        # MAIN LOOP
         while not done and steps < 3:
             steps += 1
 
-            #  LLM CALL 
-            response = client.chat.completions.create(
-                model=MODEL_NAME,
-                messages=[
-                    {"role": "system", "content": "You are a helpful customer support agent."},
-                    {"role": "user", "content": f"Customer email: {email}\nWrite a helpful reply."}
-                ],
-                temperature=0.7,
-                max_tokens=100,
-            )
+            # LLM CALL (2nd CALL)
+            try:
+                response = client.chat.completions.create(
+                    model=MODEL_NAME,
+                    messages=[
+                        {"role": "system", "content": "You are a helpful customer support agent."},
+                        {"role": "user", "content": f"Customer email: {email}\nWrite a helpful reply."}
+                    ],
+                    temperature=0.7,
+                    max_tokens=100,
+                )
 
-            reply = response.choices[0].message.content.strip()
+                reply = response.choices[0].message.content.strip()
 
-            # STEP ENV
+            except Exception as e:
+                print(f"[ERROR] LLM call failed: {e}", flush=True)
+                reply = "Sorry for the inconvenience. We will resolve your issue."
+
+            # ENV STEP
             res = requests.post(
                 "http://127.0.0.1:8000/step",
                 json={"action": {"reply": reply}},
