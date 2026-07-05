@@ -1,107 +1,74 @@
 import os
 import requests
 from openai import OpenAI
+from dotenv import load_dotenv
 
 
-def log_start():
-    print(f"[START] task=email_support env=email-support model={os.environ.get('MODEL_NAME','gpt-3.5-turbo')}", flush=True)
+load_dotenv()
+
+API_URL = "http://127.0.0.1:8000"
+
+client = OpenAI(
+    api_key=os.getenv("OPENAI_API_KEY")
+)
 
 
-def log_step(step, action, reward, done):
-    print(f"[STEP] step={step} action={action} reward={reward:.2f} done={str(done).lower()} error=null", flush=True)
+def generate_reply(email):
 
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {
+                "role": "system",
+                "content":
+                    "You are a helpful customer support assistant."
+            },
 
-def log_end(success, steps, score, rewards):
-    rewards_str = ",".join([f"{r:.2f}" for r in rewards])
-    print(f"[END] success={str(success).lower()} steps={steps} score={score:.2f} rewards={rewards_str}", flush=True)
+            {
+                "role": "user",
+                "content":
+                    f"Customer email: {email}\nGenerate a professional reply."
+            }
+        ]
+    )
+
+    return response.choices[0].message.content
 
 
 def run():
-    log_start()
 
-    rewards = []
-    steps = 0
-    score = 0.0
-    success = False
+    reset_response = requests.post(
+        f"{API_URL}/reset"
+    )
 
-    try:
-       
-        API_BASE_URL = os.environ["API_BASE_URL"]
-        API_KEY = os.environ["API_KEY"]
-        MODEL_NAME = os.environ.get("MODEL_NAME", "gpt-3.5-turbo")
+    observation = reset_response.json()
 
-        client = OpenAI(
-            base_url=API_BASE_URL,
-            api_key=API_KEY
+    email = observation["observation"]["email"]
+
+    done = False
+
+    while not done:
+
+        reply = generate_reply(email)
+
+        step_response = requests.post(
+            f"{API_URL}/step",
+            json={
+                "action": {
+                    "reply": reply
+                }
+            }
         )
 
-        # ONE PROXY CALL 
-        try:
-            _ = client.chat.completions.create(
-                model=MODEL_NAME,
-                messages=[{"role": "user", "content": "Hello"}],
-                max_tokens=5,
-            )
-        except Exception as e:
-            print(f"[DEBUG] initial proxy call failed: {e}", flush=True)
+        result = step_response.json()
 
-        # RESET ENV
-        res = requests.post("http://127.0.0.1:8000/reset")
-        res.raise_for_status()
-        data = res.json()
+        reward = result["reward"]
 
-        email = data["observation"]["email"]
-        done = False
+        print(f"Reward: {reward}")
 
-        # MAIN LOOP
-        while not done and steps < 3:
-            steps += 1
+        done = result["done"]
 
-            # LLM CALL (2nd CALL)
-            try:
-                response = client.chat.completions.create(
-                    model=MODEL_NAME,
-                    messages=[
-                        {"role": "system", "content": "You are a helpful customer support agent."},
-                        {"role": "user", "content": f"Customer email: {email}\nWrite a helpful reply."}
-                    ],
-                    temperature=0.7,
-                    max_tokens=100,
-                )
-
-                reply = response.choices[0].message.content.strip()
-
-            except Exception as e:
-                print(f"[ERROR] LLM call failed: {e}", flush=True)
-                reply = "Sorry for the inconvenience. We will resolve your issue."
-
-            # ENV STEP
-            res = requests.post(
-                "http://127.0.0.1:8000/step",
-                json={"action": {"reply": reply}},
-            )
-            res.raise_for_status()
-
-            data = res.json()
-
-            reward = float(data.get("reward", 0.0))
-            done = data.get("done", False)
-            email = data["observation"]["email"]
-
-            rewards.append(reward)
-
-            log_step(steps, reply, reward, done)
-
-        if rewards:
-            score = min(sum(rewards) / len(rewards), 1.0)
-
-        success = score > 0.1
-
-    except Exception as e:
-        print(f"[ERROR] {e}", flush=True)
-        success = False
-
-    log_end(success, steps, score, rewards)
+        email = result["observation"]["email"]
 
 
 if __name__ == "__main__":

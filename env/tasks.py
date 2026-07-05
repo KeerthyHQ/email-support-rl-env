@@ -1,14 +1,17 @@
 TASKS = [
     {
-        "name": "easy_basic_response",
-        "difficulty": "easy"
+        "name": "basic_response_quality",
+        "difficulty": "easy",
+        "description": "Evaluate keyword relevance and politeness."
     },
     {
-        "name": "medium_followup_handling",
-        "difficulty": "medium"
+        "name": "conversation_consistency",
+        "difficulty": "medium",
+        "description": "Evaluate follow-up handling and consistency across multiple responses."
     },
     {
-        "name": "hard_complex_resolution",
-        "difficulty": "hard"
+        "name": "issue_resolution_quality",
+        "difficulty": "hard",
+        "description": "Evaluate whether the issue was properly resolved."
     }
 ]
