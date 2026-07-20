@@ -1,0 +1,634 @@
+/* ===========================
+   Global
+=========================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+body{
+
+    font-family:Arial,Helvetica,sans-serif;
+
+    background:#f3f6fb;
+
+    color:#333;
+
+    margin:0;
+
+    padding:30px;
+
+}
+
+
+
+/* ===========================
+   Layout
+=========================== */
+
+.container{
+
+    width:100%;
+
+    max-width:1200px;
+
+    margin:0 auto;
+
+}
+
+/* ===========================
+   Header
+=========================== */
+.page-header{
+
+    max-width:1200px;
+
+    margin:0 auto 30px;
+
+    padding:30px;
+
+}
+
+.page-header h1{
+
+    font-size:40px;
+
+    margin-bottom:12px;
+
+    font-weight:700;
+
+    letter-spacing:.5px;
+
+}
+
+.page-header p{
+
+    font-size:17px;
+
+    color:#e5e7eb;
+
+    max-width:700px;
+
+    margin:0 auto;
+
+    line-height:1.6;
+
+}
+
+/* ===========================
+   Cards
+=========================== */
+
+.card{
+
+    background:#ffffff;
+
+    border-radius:15px;
+
+    padding:25px;
+
+    margin-bottom:25px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+}
+
+.card h2{
+
+    margin-bottom:18px;
+
+    color:#1f2937;
+
+}
+
+
+/* ===========================
+   Status
+=========================== */
+
+.status-card{
+
+    margin-bottom:20px;
+
+    text-align:center;
+
+}
+.status-wrapper{
+
+    margin-top:25px;
+
+}
+
+.status{
+
+    display:inline-block;
+
+    padding:12px 22px;
+
+    border-radius:25px;
+
+    background:white;
+
+    color:#15803d;
+
+    font-weight:bold;
+
+    box-shadow:0 5px 15px rgba(0,0,0,.12);
+
+}
+
+.running{
+
+    background:#d4edda;
+
+    color:#155724;
+
+}
+
+.offline{
+
+    background:#f8d7da;
+
+    color:#721c24;
+
+}
+
+
+/* ===========================
+   Email
+=========================== */
+
+.email-box{
+
+    background:#f8fafc;
+
+    border-left:5px solid #2563eb;
+
+    padding:18px;
+
+    border-radius:10px;
+
+    font-size:18px;
+
+    line-height:1.8;
+
+    color:#1f2937;
+
+    font-weight:500;
+
+}
+
+/* ===========================
+   Metrics
+=========================== */
+
+.metrics-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+
+    gap:15px;
+
+}
+
+.metric-card{
+
+    background:#f9fafb;
+
+    padding:18px;
+
+    border-radius:12px;
+
+    text-align:center;
+
+    border:1px solid #e5e7eb;
+
+}
+
+.metric-card .label{
+
+    display:block;
+
+    color:#6b7280;
+
+    margin-bottom:8px;
+
+    font-size:14px;
+
+}
+
+.metric-card span:last-child{
+
+    font-size:18px;
+
+    font-weight:bold;
+
+}
+
+
+/* ===========================
+   Reward
+=========================== */
+
+.progress-container{
+
+    margin-top:15px;
+
+}
+
+.progress-bar{
+
+    width:100%;
+
+    height:18px;
+
+    background:#e5e7eb;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+}
+
+.progress-fill{
+
+    width:0%;
+
+    height:100%;
+
+    background:linear-gradient(
+        90deg,
+        #10b981,
+        #22c55e
+    );
+
+    transition:width .6s ease;
+
+}
+
+.reward-value{
+
+    margin-top:12px;
+
+    font-size:20px;
+
+    font-weight:bold;
+
+}
+
+
+
+
+/* ===========================
+   Conversation History
+=========================== */
+
+.history{
+
+    height:320px;
+
+    overflow-y:auto;
+
+    background:#f8fafc;
+
+    border:1px solid #e5e7eb;
+
+    border-radius:12px;
+
+    padding:20px;
+
+}
+
+
+/* Each message row */
+
+.message{
+
+    display:flex;
+
+    margin-bottom:18px;
+
+}
+
+
+/* Customer messages - left */
+
+.customer{
+
+    justify-content:flex-start;
+
+}
+
+.customer .bubble{
+
+    background:#e8f1ff;
+
+    color:#1e3a8a;
+
+    border-left:5px solid #2563eb;
+
+}
+
+
+/* Agent messages - right */
+
+.agent{
+
+    justify-content:flex-end;
+
+}
+
+.agent .bubble{
+
+    background:#dcfce7;
+
+    color:#166534;
+
+    border-right:5px solid #16a34a;
+
+}
+
+
+/* Bubble */
+
+.bubble{
+
+    max-width:75%;
+
+    padding:14px 18px;
+
+    border-radius:18px;
+
+    box-shadow:0 4px 10px rgba(0,0,0,.08);
+
+    line-height:1.6;
+
+    word-wrap:break-word;
+
+}
+
+.sender{
+
+    display:block;
+
+    font-weight:bold;
+
+    margin-bottom:8px;
+
+    font-size:14px;
+
+}
+
+/* ===========================
+   Reply
+=========================== */
+
+textarea{
+
+    width:100%;
+
+    height:140px;
+
+    resize:none;
+
+    padding:15px;
+
+    border-radius:12px;
+
+    border:1px solid #d1d5db;
+
+    font-size:15px;
+
+    margin-bottom:20px;
+
+}
+
+textarea:focus{
+
+    outline:none;
+
+    border-color:#2563eb;
+
+}
+
+
+/* ===========================
+   Buttons
+=========================== */
+
+.button-group{
+
+    display:flex;
+
+    gap:15px;
+
+}
+
+button{
+
+    border:none;
+
+    border-radius:10px;
+
+    padding:12px 22px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    transition:.25s;
+
+}
+
+.send-btn{
+
+    background:#16a34a;
+
+    color:white;
+
+}
+
+.send-btn:hover{
+
+    background:#15803d;
+
+}
+
+.reset-btn{
+
+    background:#2563eb;
+
+    color:white;
+
+}
+
+.reset-btn:hover{
+
+    background:#1d4ed8;
+
+}
+
+button:disabled{
+
+    background:#9ca3af;
+
+    cursor:not-allowed;
+
+}
+
+
+/* ===========================
+   Evaluation
+=========================== */
+
+.hidden{
+
+    display:none;
+
+}
+
+.evaluation-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+
+    gap:18px;
+
+    margin:20px 0;
+
+}
+
+.score-card{
+
+    background:#f8fafc;
+
+    border-radius:12px;
+
+    text-align:center;
+
+    padding:20px;
+
+    border:1px solid #e5e7eb;
+
+}
+
+.score-value{
+
+    font-size:46px;
+
+    font-weight:bold;
+
+    color:#2563eb;
+
+}
+
+.grade{
+
+    font-size:34px;
+
+    color:#16a34a;
+
+    font-weight:bold;
+
+}
+
+#evaluation_metrics{
+
+    margin-top:15px;
+
+    margin-bottom:25px;
+
+}
+
+.metric-row{
+
+    margin-bottom:18px;
+
+}
+
+.metric-row p{
+
+    margin-bottom:6px;
+
+}
+
+.metric-progress{
+
+    width:100%;
+
+    height:12px;
+
+    background:#e5e7eb;
+
+    border-radius:12px;
+
+    overflow:hidden;
+
+}
+
+.metric-progress div{
+
+    height:100%;
+
+    width:0%;
+
+    background:#2563eb;
+
+    transition:width .6s;
+
+}
+
+#strengths,
+#suggestions{
+
+    margin-left:25px;
+
+    margin-top:12px;
+
+}
+
+#strengths li{
+
+    color:#15803d;
+
+    margin-bottom:8px;
+
+}
+
+#suggestions li{
+
+    color:#b45309;
+
+    margin-bottom:8px;
+
+}
+
+
+/* ===========================
+   Responsive
+=========================== */
+
+@media(max-width:768px){
+
+    body{
+
+        padding:15px;
+
+    }
+
+    .button-group{
+
+        flex-direction:column;
+
+    }
+
+    button{
+
+        width:100%;
+
+    }
+
+}

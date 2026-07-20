@@ -1,28 +1,64 @@
-from openenv.core.env_server import create_fastapi_app
-from env.env import EmailEnvironment
-from env.models import EmailAction, EmailObservation
+from fastapi import FastAPI
 from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 
-def create_app():
-    return create_fastapi_app(
-        EmailEnvironment,
-        action_cls=EmailAction,
-        observation_cls=EmailObservation
+from env.env import EmailEnvironment
+from env.models import EmailAction
+
+app = FastAPI(title="AI Email Support Environment")
+
+# Persistent environment
+environment = EmailEnvironment()
+
+app.mount("/UI", StaticFiles(directory="UI"), name="UI")
+
+
+@app.get("/")
+def home():
+    return FileResponse("UI/index.html")
+
+
+@app.post("/reset")
+def reset():
+
+    observation = environment.reset()
+
+    return {
+        "observation": observation.model_dump(),
+        "reward": observation.reward,
+        "done": observation.done,
+        "evaluation": None
+    }
+
+
+@app.post("/step")
+def step(action: dict):
+
+    email_action = EmailAction(
+        **action.get("action", {})
     )
 
+    observation = environment.step(email_action)
 
-app = create_app()
+    return {
+        "observation": observation.model_dump(),
+        "reward": observation.reward,
+        "done": observation.done,
+        "evaluation": environment.evaluation()
+    }
 
-#UI homepage
-@app.get("/")
-def serve_ui():
-    return FileResponse("server/UI/index.html")
 
-# VALIDATION
-def main():
-    import uvicorn
-    uvicorn.run("server.app:app", host="0.0.0.0", port=8000)
+@app.get("/state")
+def state():
+    return environment.state()
 
 
 if __name__ == "__main__":
-    main()
+    import uvicorn
+
+    uvicorn.run(
+        "server.app:app",
+        host="0.0.0.0",
+        port=8000,
+        reload=True
+    )

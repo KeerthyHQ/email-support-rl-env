@@ -1,312 +1,235 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>AI Email Support Evaluation Environment</title>
 
-    <style>
-
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            background: #f4f6f8;
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-
-            min-height: 100vh;
-        }
-
-        h1 {
-            color: #333;
-            margin-bottom: 5px;
-        }
-
-        .subtitle {
-            color: gray;
-            margin-bottom: 20px;
-        }
-
-        .container {
-            width: 650px;
-            padding: 25px;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-        }
-
-        .card {
-            background: #fafafa;
-            padding: 12px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
-        }
-
-        textarea {
-            width: 100%;
-            height: 120px;
-            padding: 10px;
-            margin-top: 10px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            resize: none;
-            box-sizing: border-box;
-        }
-
-        button {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-top: 10px;
-            margin-right: 10px;
-        }
-
-        .send-btn {
-            background: #4CAF50;
-            color: white;
-        }
-
-        .reset-btn {
-            background: #2196F3;
-            color: white;
-        }
-
-        #history {
-            height: 220px;
-            overflow-y: auto;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            padding: 10px;
-            background: #fafafa;
-        }
-
-        .metric {
-            margin: 5px 0;
-        }
-
-        #status {
-            color: green;
-            font-weight: bold;
-        }
-
-    </style>
+    <link rel="stylesheet" href="/UI/style.css">
 </head>
 
 <body>
 
-<h1>🤖 AI Email Support Evaluation Environment</h1>
+    <header class="page-header">
 
-<p class="subtitle">
-Evaluate customer support agents using rewards and grading metrics.
-</p>
+    <h1>
+        🤖 AI Email Support Evaluation Environment
+    </h1>
 
-<div class="container">
+    <p>
+        Evaluate AI customer support responses using
+        rewards, grading metrics, and conversation
+        quality analysis.
+    </p>
 
-    <h3 id="status">🟢 Environment Running</h3>
+    <div class="status-wrapper">
 
-    <div class="card">
-
-        <h2>📩 Customer Email</h2>
-
-        <p id="email">Loading...</p>
-
-    </div>
-
-    <div class="card">
-
-        <div class="metric">
-            <b>Category:</b>
-            <span id="category">-</span>
-        </div>
-
-        <div class="metric">
-            <b>Priority:</b>
-            <span id="priority">-</span>
-        </div>
-
-        <div class="metric">
-            <b>Sentiment:</b>
-            <span id="sentiment">-</span>
-        </div>
-
-        <div class="metric">
-            <b>Task:</b>
-            <span id="task">-</span>
-        </div>
-
-        <div class="metric">
-            <b>Task Score:</b>
-            <span id="task_score">0</span>
-        </div>
-
-        <div class="metric">
-            <b>Keyword Matches:</b>
-            <span id="matches">0</span>
-        </div>
-
-        <div class="metric">
-            <b>Reward:</b>
-            ⭐ <span id="reward">0</span>
-        </div>
+        <span id="status" class="status running">
+            🟢 Environment Running
+        </span>
 
     </div>
 
-    <h3>📜 Conversation History</h3>
+</header>
+    <main class="container">
 
-    <div id="history"></div>
+        <!-- Customer Email -->
 
-    <textarea
-        id="reply"
-        placeholder="Type your reply here..."
-    ></textarea>
+        <section class="card">
 
-    <br>
+            <h2>📩 Customer Email</h2>
 
-    <button class="send-btn" onclick="sendReply()">
-        Send Reply
-    </button>
+            <div id="email" class="email-box">
+                Loading...
+            </div>
 
-    <button class="reset-btn" onclick="resetEnvironment()">
-        Reset Environment
-    </button>
+        </section>
 
-</div>
+        <!-- Metrics -->
 
-<script>
+        <section class="card">
 
-const BASE_URL = "";
+            <h2>📊 Evaluation Metrics</h2>
 
-async function resetEnvironment() {
+            <div class="metrics-grid">
 
-    try {
+                <div class="metric-card">
+                    <span class="label">Category</span>
+                    <span id="category">-</span>
+                </div>
 
-        const response = await fetch(
-            BASE_URL + "/reset",
-            {
-                method: "POST"
-            }
-        );
+                <div class="metric-card">
+                    <span class="label">Priority</span>
+                    <span id="priority">-</span>
+                </div>
 
-        const data = await response.json();
+                <div class="metric-card">
+                    <span class="label">Sentiment</span>
+                    <span id="sentiment">-</span>
+                </div>
 
-        const obs = data.observation;
+                <div class="metric-card">
+                    <span class="label">Task</span>
+                    <span id="task">-</span>
+                </div>
 
-        document.getElementById("email").innerText =
-            obs.email;
+                <div class="metric-card">
+                    <span class="label">Task Score</span>
+                    <span id="task_score">0</span>
+                </div>
 
-        document.getElementById("reward").innerText =
-            data.reward ?? 0;
+                <div class="metric-card">
+                    <span class="label">Keyword Matches</span>
+                    <span id="matches">0</span>
+                </div>
 
-        document.getElementById("category").innerText =
-            obs.metadata.category;
+                <div class="metric-card">
+                    <span class="label">Conversation Step</span>
+                    <span id="step_count">0</span>
+                </div>
 
-        document.getElementById("priority").innerText =
-            obs.metadata.priority;
+                <div class="metric-card">
+                    <span class="label">Difficulty</span>
+                    <span id="difficulty">1.0</span>
+                </div>
 
-        document.getElementById("sentiment").innerText =
-            obs.metadata.sentiment;
+            </div>
 
-        document.getElementById("task").innerText =
-            obs.metadata.task ?? "-";
+        </section>
 
-        document.getElementById("history").innerHTML =
-            `<p><b>📩 Customer:</b> ${obs.email}</p>`;
+        <!-- Reward -->
 
-        document.getElementById("status").innerText =
-            "🟢 Environment Running";
+        <section class="card">
 
-    }
+            <h2>⭐ Reward Score</h2>
 
-    catch (error) {
+            <div class="progress-container">
 
-        document.getElementById("status").innerText =
-            "🔴 Environment Offline";
+                <div class="progress-bar">
 
-        console.error(error);
+                    <div
+                        id="reward-progress"
+                        class="progress-fill"
+                        style="width:0%">
+                    </div>
 
-    }
-}
+                </div>
 
-async function sendReply() {
+                <div class="reward-value">
+                    Reward:
+                    <strong id="reward">0.00</strong>
+                </div>
 
-    const reply =
-        document.getElementById("reply").value;
+            </div>
 
-    if (!reply.trim())
-        return;
+        </section>
 
-    const history =
-        document.getElementById("history");
+        <!-- Conversation -->
 
-    history.innerHTML +=
-        `<p><b>🤖 Agent:</b> ${reply}</p>`;
+        <section class="card">
 
-    const response = await fetch(
-        BASE_URL + "/step",
-        {
-            method: "POST",
+            <h2>📜 Conversation History</h2>
 
-            headers: {
-                "Content-Type":
-                    "application/json"
-            },
+            <div id="history" class="history"></div>
 
-            body: JSON.stringify({
-                action: {
-                    reply: reply
-                }
-            })
-        }
-    );
+        </section>
 
-    const data = await response.json();
+        <!-- Reply -->
 
-    const obs = data.observation;
+        <section class="card">
 
-    document.getElementById("reward").innerText =
-        data.reward.toFixed(2);
+            <h2>✍ Reply</h2>
 
-    document.getElementById("email").innerText =
-        obs.email;
+            <textarea
+                id="reply"
+                placeholder="Type your customer support response here..."
+            ></textarea>
 
-    document.getElementById("task").innerText =
-        obs.metadata.task ?? "-";
+            <div class="button-group">
 
-    document.getElementById("task_score").innerText =
-        obs.metadata.task_score ?? 0;
+                <button
+                    id="send-btn"
+                    class="send-btn"
+                    onclick="sendReply()">
 
-    document.getElementById("matches").innerText =
-        obs.metadata.keyword_matches ?? 0;
+                    Send Reply
 
-    history.innerHTML +=
-        `<p><b>📩 Customer:</b> ${obs.email}</p>`;
+                </button>
 
-    history.scrollTop =
-        history.scrollHeight;
+                <button
+                    class="reset-btn"
+                    onclick="resetEnvironment()">
 
-    document.getElementById("reply").value = "";
+                    Reset Environment
 
-    if (data.done) {
+                </button>
 
-        history.innerHTML += `
-            <hr>
-            <p>
-                ✅ Conversation Completed
-            </p>
-        `;
-    }
-}
+            </div>
 
-resetEnvironment();
+        </section>
 
-</script>
+        <!-- Evaluation Dashboard -->
+
+        <section
+            id="evaluation-section"
+            class="card hidden">
+
+            <h2>🏆 Final Evaluation Report</h2>
+
+            <div class="evaluation-grid">
+
+                <div class="score-card">
+
+                    <h3>Overall Score</h3>
+
+                    <div id="overall_score" class="score-value">
+                        0
+                    </div>
+
+                </div>
+
+                <div class="score-card">
+
+                    <h3>Grade</h3>
+
+                    <div id="grade" class="grade">
+                        -
+                    </div>
+
+                </div>
+
+                <div class="score-card">
+
+                    <h3>Status</h3>
+
+                    <div id="evaluation_status">
+                        -
+                    </div>
+
+                </div>
+
+            </div>
+
+            <h3>📈 Performance Metrics</h3>
+
+            <div id="evaluation_metrics"></div>
+
+            <h3>💪 Strengths</h3>
+
+            <ul id="strengths"></ul>
+
+            <h3>💡 Suggestions</h3>
+
+            <ul id="suggestions"></ul>
+
+        </section>
+
+    </main>
+
+    <script src="/UI/script.js"></script>
 
 </body>
+
 </html>
