@@ -1,37 +1,81 @@
-# 🤖 AI Email Support Evaluation Environment
+🤖 AI Email Support Evaluation Environment
 
-A Reinforcement Learning inspired environment for evaluating AI-powered customer support agents.
+A Reinforcement Learning (RL)-inspired environment for evaluating AI-powered customer support agents through realistic multi-turn email conversations.
 
-The environment simulates real-world customer support conversations and scores responses based on:
 
-- Relevance
-- Keyword matching
-- Politeness
-- Issue resolution
-- Conversation consistency
 
----
 
-## 🚀 Features
 
-- Multi-turn customer support conversations
-- Reward-based evaluation system
-- Task-specific graders
-- Support for multiple customer issue scenarios
-- FastAPI backend
-- Docker support
-- Automated tests using Pytest
-- Interactive web UI
 
----
 
-## 📂 Project Structure
 
-```text
+
+
+📖 Overview
+
+The AI Email Support Evaluation Environment simulates realistic customer support conversations where an AI agent responds to customer emails over multiple turns.
+
+Each response is automatically evaluated using a reward-based scoring system that measures:
+
+🎯 Response relevance
+🔑 Keyword matching
+💬 Professional tone
+✅ Issue resolution
+🔄 Conversation consistency
+
+The environment is designed for benchmarking customer-support AI agents and experimenting with reinforcement learning inspired evaluation workflows.
+
+✨ Features
+📧 Multi-turn customer support conversations
+🤖 RL-inspired reward evaluation
+📊 Interactive evaluation dashboard
+🎯 Task-specific grading
+📈 Performance metrics
+📨 Multiple customer support scenarios
+⚡ FastAPI backend
+🌐 Interactive HTML/CSS/JavaScript frontend
+🧪 Automated testing with Pytest
+🐳 Docker support
+🤗 Hugging Face deployment ready
+📸 Screenshots
+Environment Dashboard
+
+screenshots/dashboard.png
+
+Multi-turn Conversation
+
+screenshots/conversation.png
+
+Final Evaluation Report
+
+screenshots/evaluation.png
+
+🏗 Architecture
+                Customer Email
+                      │
+                      ▼
+            AI Support Agent
+                      │
+                      ▼
+          Response Generation
+                      │
+                      ▼
+        Reward & Keyword Evaluation
+                      │
+                      ▼
+             Task-specific Graders
+                      │
+                      ▼
+         Updated Conversation State
+                      │
+                      ▼
+          Final Evaluation Report
+📂 Project Structure
 email-support-rl-env/
 │
 ├── env/
 │   ├── env.py
+│   ├── evaluation.py
 │   ├── rewards.py
 │   ├── graders.py
 │   ├── scenarios.py
@@ -42,241 +86,67 @@ email-support-rl-env/
 │   ├── app.py
 │   └── __init__.py
 │
-├── tests/
-│   ├── test_rewards.py
-│   └── test_graders.py
-│
 ├── UI/
-│   └── index.html
+│   ├── index.html
+│   ├── style.css
+│   └── script.js
 │
-├── docs/
-│   └── architecture.png
+├── tests/
 │
 ├── screenshots/
 │
-├── inference.py
 ├── Dockerfile
 ├── requirements.txt
+├── inference.py
 └── README.md
-```
 
----
+📧 Supported Customer Scenarios
 
-## 🏗 Architecture
+Refund Request
+Delayed Delivery
+Wrong Product Received
+Duplicate Payment
+Payment Deducted but Order Failed
+Password Reset
+Account Locked
+Order Cancellation
+Refund Status
+Address Change
 
-```text
-Customer Email
-      ↓
-Inference Agent
-      ↓
-LLM Response Generation
-      ↓
-Environment Evaluation
-      ↓
-Reward Calculation
-      ↓
-Task Grading
-      ↓
-Next Observation
-```
+🎯 Evaluation Tasks
 
----
+The environment evaluates AI agents across three dimensions.
 
-## 📧 Supported Scenarios
+Task	Description
+Basic Response Quality	Keyword relevance, politeness and clarity
+Conversation Consistency	Context retention across multiple turns
+Issue Resolution Quality	Resolution effectiveness and completion
+🏆 Reward Function
 
-The environment currently supports:
+Rewards are calculated using several evaluation signals.
 
-- Refund requests
-- Delayed delivery
-- Wrong product received
-- Duplicate payment
-- Payment deduction issues
-- Password reset
-- Account lockout
-- Order cancellation
-- Refund status inquiries
-- Address change requests
+Metric	Reward
+Keyword Match	+1.0
+Multiple Keywords	+1.5
+Professional Tone	+0.5
+Resolution Bonus	+1.0
+Repetition Penalty	-0.5
+Short Reply Penalty	-0.5
 
----
+Normalized Reward Range
 
-## 🧠 Reward Function
-
-Rewards are computed using:
-
-| Component | Reward |
-|----------|--------|
-| Keyword Match | +1.0 |
-| Politeness | +0.5 |
-| Multiple Keywords | +1.5 |
-| Resolution Bonus | +1.0 |
-| Repetition Penalty | -0.5 |
-| Short Reply Penalty | -0.5 |
-
-Rewards are normalized into the range:
-
-```text
 0.01 → 0.99
-```
+📊 Evaluation Dashboard
 
----
+The environment generates a final evaluation report containing:
 
-## 🎯 Evaluation Tasks
-
-The environment evaluates agents across three dimensions:
-
-### 1. Basic Response Quality
-Measures:
-- relevance
-- keyword coverage
-- politeness
-
-### 2. Conversation Consistency
-Measures:
-- response diversity
-- context retention
-- conversation quality
-
-### 3. Issue Resolution Quality
-Measures:
-- resolution effectiveness
-- customer satisfaction
-- completion likelihood
-
----
-
-## 🛠 Installation
-
-### Clone repository
-
-```bash
-git clone https://github.com/KeerthyHQ/email-support-rl-env.git
-cd email-support-rl-env
-```
-
-### Create virtual environment
-
-```bash
-python -m venv .venv
-source .venv/bin/activate
-```
-
-### Install dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
----
-
-## 🔑 Configure OpenAI API Key
-
-Create a `.env` file:
-
-```text
-OPENAI_API_KEY=your_api_key_here
-```
-
----
-
-## ▶ Run FastAPI Server
-
-```bash
-uvicorn server.app:app --reload
-```
-
-Server runs at:
-
-```text
-http://127.0.0.1:8000
-```
-
----
-
-## 🤖 Run Inference Agent
-
-```bash
-python inference.py
-```
-
----
-
-## 🧪 Run Tests
-
-```bash
-pytest
-```
-
-Expected output:
-
-```text
-2 passed in 0.04s
-```
-
----
-
-## 🐳 Run with Docker
-
-Build image:
-
-```bash
-docker build -t email-support-env .
-```
-
-Run container:
-
-```bash
-docker run -p 7860:7860 email-support-env
-```
-
----
-
-## 📊 Example Reward Output
-
-```text
-Customer:
-I received a damaged product and need a refund.
-
-Agent:
-Sorry for the inconvenience. We will process your refund immediately.
-
-Reward: 0.82
-Task Score: 0.87
-Keyword Matches: 2
-```
-
----
-
-## 🔮 Future Improvements
-
-- Sentiment-aware rewards
-- Dynamic customer personas
-- LLM-as-a-judge evaluation
-- Human feedback integration
-- RL fine-tuning support
-- Analytics dashboard
-
----
-
-## 📌 Tech Stack
-
-- Python
-- FastAPI
-- OpenAI API
-- Pytest
-- Docker
-- HTML/CSS/JavaScript
-
----
-
-## 👩‍💻 Author
-
-Keerthika M
-
-GitHub:
-https://github.com/KeerthyHQ
-
----
-
-## 📄 License
-
-MIT License
+Overall Score
+Grade
+Resolution Status
+Keyword Accuracy
+Conversation Consistency
+Task Completion
+Professional Tone
+Response Quality
+Strengths
+Suggestions
