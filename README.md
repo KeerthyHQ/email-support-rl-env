@@ -44,33 +44,28 @@ This environment provides an interactive platform for benchmarking customer supp
 
 # 📸 Screenshots
 
-## 🖥 Environment Dashboard
+## 🖥 AI Email Support Dashboard
 
-> *(Add Screenshot)*
-
-```
-screenshots/dashboard.png
-```
+<p align="center">
+  <img src="screenshots/dashboard.png" width="900">
+</p>
 
 ---
 
 ## 💬 Multi-turn Conversation
 
-> *(Add Screenshot)*
-
-```
-screenshots/conversation.png
-```
+<p align="center">
+  <img src="screenshots/conversation.png" width="900">
+</p>
 
 ---
 
 ## 🏆 Final Evaluation Report
 
-> *(Add Screenshot)*
 
-```
-screenshots/evaluation.png
-```
+<p align="center">
+  <img src="screenshots/evaluation.png" width="900">
+</p>
 
 ---
 
