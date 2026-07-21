@@ -20,7 +20,7 @@ def home():
 
 @app.post("/reset")
 def reset():
-
+    
     observation = environment.reset()
 
     return {

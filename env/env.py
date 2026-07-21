@@ -25,9 +25,10 @@ class EmailEnvironment:
         self._evaluation = None
 
     def reset(self):
-
+        print("========== RESET ==========")
         current_email = random.choice(EMAIL_SCENARIOS)
         current_task = random.choice(TASKS)
+        print("Selected Scenario:", current_email["email"])
 
         self._state = EmailState(
             step_count=0,
@@ -66,6 +67,13 @@ class EmailEnvironment:
 
         state = self._state
 
+        print("========== STEP ==========")
+        print("Current Scenario:", state.current_email["email"])
+        print("Step Count:", state.step_count)
+        print("Followups:", state.current_email["followups"])
+
+
+
         reply = (action.reply or "").lower()
 
         state.conversation_history.append(reply)
@@ -88,7 +96,7 @@ class EmailEnvironment:
         )
 
         # ----------------------------
-        # NEW: Track cumulative metrics
+        #Track cumulative metrics
         # ----------------------------
 
         state.total_reward += reward
@@ -159,7 +167,9 @@ class EmailEnvironment:
         else:
 
             self._evaluation = None
-
+        
+        print("Next Email:", next_email)
+        print("Done:", done)
         return EmailObservation(
 
             email=next_email,
