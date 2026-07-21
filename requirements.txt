@@ -1,8 +1,10 @@
 fastapi
-uvicorn
+uvicorn[standard]
 pydantic
 requests
 openai
 python-dotenv
+python-multipart
+jinja2
 pytest
 openenv-core

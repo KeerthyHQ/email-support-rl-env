@@ -54,11 +54,14 @@ def state():
 
 
 if __name__ == "__main__":
+    import os
     import uvicorn
+
+    port = int(os.getenv("PORT", 7860))
 
     uvicorn.run(
         "server.app:app",
         host="0.0.0.0",
-        port=8000,
+        port=port,
         reload=True
     )
