@@ -1,56 +1,82 @@
-🤖 AI Email Support Evaluation Environment
+# 🤖 AI Email Support Evaluation Environment
 
-A Reinforcement Learning (RL)-inspired environment for evaluating AI-powered customer support agents through realistic multi-turn email conversations.
+> **A Reinforcement Learning (RL)-inspired environment for evaluating AI-powered customer support agents through realistic multi-turn email conversations.**
 
+![Python](https://img.shields.io/badge/Python-3.10+-blue)
+![FastAPI](https://img.shields.io/badge/FastAPI-Backend-green)
+![Docker](https://img.shields.io/badge/Docker-Ready-blue)
+![License](https://img.shields.io/badge/License-MIT-yellow)
+![Status](https://img.shields.io/badge/Status-Active-success)
 
+---
 
+# 📖 Overview
 
+The **AI Email Support Evaluation Environment** simulates real-world customer support email conversations where an AI agent interacts with customers over multiple turns.
 
+Each response is automatically evaluated using a reward-based scoring system inspired by Reinforcement Learning (RL), measuring:
 
+- 🎯 Response Relevance
+- 🔑 Keyword Matching
+- 💬 Professional Tone
+- ✅ Issue Resolution
+- 🔄 Conversation Consistency
 
+This environment provides an interactive platform for benchmarking customer support AI agents and experimenting with intelligent evaluation workflows.
 
+---
 
+# ✨ Features
 
-📖 Overview
+- 📧 Multi-turn customer support conversations
+- 🤖 RL-inspired reward evaluation
+- 📊 Interactive evaluation dashboard
+- 🎯 Task-specific grading
+- 📈 Performance metrics
+- 📨 Multiple customer support scenarios
+- ⚡ FastAPI backend
+- 🌐 Interactive HTML/CSS/JavaScript frontend
+- 🧪 Automated testing using Pytest
+- 🐳 Docker support
+- 🤗 Hugging Face deployment ready
 
-The AI Email Support Evaluation Environment simulates realistic customer support conversations where an AI agent responds to customer emails over multiple turns.
+---
 
-Each response is automatically evaluated using a reward-based scoring system that measures:
+# 📸 Screenshots
 
-🎯 Response relevance
-🔑 Keyword matching
-💬 Professional tone
-✅ Issue resolution
-🔄 Conversation consistency
+## 🖥 Environment Dashboard
 
-The environment is designed for benchmarking customer-support AI agents and experimenting with reinforcement learning inspired evaluation workflows.
+> *(Add Screenshot)*
 
-✨ Features
-📧 Multi-turn customer support conversations
-🤖 RL-inspired reward evaluation
-📊 Interactive evaluation dashboard
-🎯 Task-specific grading
-📈 Performance metrics
-📨 Multiple customer support scenarios
-⚡ FastAPI backend
-🌐 Interactive HTML/CSS/JavaScript frontend
-🧪 Automated testing with Pytest
-🐳 Docker support
-🤗 Hugging Face deployment ready
-📸 Screenshots
-Environment Dashboard
-
+```
 screenshots/dashboard.png
+```
 
-Multi-turn Conversation
+---
 
+## 💬 Multi-turn Conversation
+
+> *(Add Screenshot)*
+
+```
 screenshots/conversation.png
+```
 
-Final Evaluation Report
+---
 
+## 🏆 Final Evaluation Report
+
+> *(Add Screenshot)*
+
+```
 screenshots/evaluation.png
+```
 
-🏗 Architecture
+---
+
+# 🏗 Architecture
+
+```text
                 Customer Email
                       │
                       ▼
@@ -70,7 +96,13 @@ screenshots/evaluation.png
                       │
                       ▼
           Final Evaluation Report
-📂 Project Structure
+```
+
+---
+
+# 📂 Project Structure
+
+```text
 email-support-rl-env/
 │
 ├── env/
@@ -92,6 +124,8 @@ email-support-rl-env/
 │   └── script.js
 │
 ├── tests/
+│   ├── test_rewards.py
+│   └── test_graders.py
 │
 ├── screenshots/
 │
@@ -99,54 +133,243 @@ email-support-rl-env/
 ├── requirements.txt
 ├── inference.py
 └── README.md
+```
 
-📧 Supported Customer Scenarios
+---
 
-Refund Request
-Delayed Delivery
-Wrong Product Received
-Duplicate Payment
-Payment Deducted but Order Failed
-Password Reset
-Account Locked
-Order Cancellation
-Refund Status
-Address Change
+# 📧 Supported Customer Scenarios
 
-🎯 Evaluation Tasks
+The environment currently supports:
 
-The environment evaluates AI agents across three dimensions.
+- Refund Request
+- Delayed Delivery
+- Wrong Product Received
+- Duplicate Payment
+- Payment Deducted but Order Failed
+- Password Reset
+- Account Locked
+- Order Cancellation
+- Refund Status Inquiry
+- Address Change Request
 
-Task	Description
-Basic Response Quality	Keyword relevance, politeness and clarity
-Conversation Consistency	Context retention across multiple turns
-Issue Resolution Quality	Resolution effectiveness and completion
-🏆 Reward Function
+---
 
-Rewards are calculated using several evaluation signals.
+# 🎯 Evaluation Tasks
 
-Metric	Reward
-Keyword Match	+1.0
-Multiple Keywords	+1.5
-Professional Tone	+0.5
-Resolution Bonus	+1.0
-Repetition Penalty	-0.5
-Short Reply Penalty	-0.5
+The AI agent is evaluated across three major dimensions.
+
+| Task | Description |
+|------|-------------|
+| **Basic Response Quality** | Measures keyword relevance, politeness, and clarity |
+| **Conversation Consistency** | Evaluates context retention and coherent follow-up responses |
+| **Issue Resolution Quality** | Measures issue resolution effectiveness and customer satisfaction |
+
+---
+
+# 🏆 Reward Function
+
+Rewards are calculated using multiple evaluation signals.
+
+| Component | Reward |
+|-----------|--------|
+| Keyword Match | +1.0 |
+| Multiple Keywords | +1.5 |
+| Professional Tone | +0.5 |
+| Resolution Bonus | +1.0 |
+| Repetition Penalty | -0.5 |
+| Short Reply Penalty | -0.5 |
 
 Normalized Reward Range
 
+```text
 0.01 → 0.99
-📊 Evaluation Dashboard
+```
 
-The environment generates a final evaluation report containing:
+---
 
-Overall Score
-Grade
-Resolution Status
-Keyword Accuracy
-Conversation Consistency
-Task Completion
-Professional Tone
-Response Quality
-Strengths
-Suggestions
+# 📊 Evaluation Dashboard
+
+After completing the conversation, the environment generates a detailed evaluation report containing:
+
+- ✅ Overall Score
+- 🎓 Grade
+- 📌 Resolution Status
+- 📈 Keyword Accuracy
+- 🔄 Conversation Consistency
+- ✔ Task Completion
+- 💬 Professional Tone
+- ⭐ Response Quality
+- 💪 Strengths
+- 💡 Suggestions
+
+---
+
+# 🚀 Quick Start
+
+## Clone the Repository
+
+```bash
+git clone https://github.com/KeerthyHQ/email-support-rl-env.git
+cd email-support-rl-env
+```
+
+## Create a Virtual Environment
+
+### Linux / macOS
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+### Windows
+
+```powershell
+python -m venv .venv
+.venv\Scripts\activate
+```
+
+---
+
+## Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+# ▶ Run the Application
+
+Start the FastAPI server:
+
+```bash
+uvicorn server.app:app --reload
+```
+
+Open your browser and navigate to:
+
+```
+http://127.0.0.1:8000
+```
+
+---
+
+# 🤖 Run the Inference Agent
+
+```bash
+python inference.py
+```
+
+---
+
+# 🧪 Run Tests
+
+```bash
+pytest
+```
+
+Expected Output:
+
+```text
+2 passed
+```
+
+---
+
+# 🐳 Docker
+
+## Build the Docker Image
+
+```bash
+docker build -t email-support-env .
+```
+
+## Run the Container
+
+```bash
+docker run -p 7860:7860 email-support-env
+```
+
+---
+
+# 🤗 Deploy to Hugging Face Spaces
+
+1. Create a **Docker Space** on Hugging Face.
+2. Clone the Space repository.
+
+```bash
+git clone https://huggingface.co/spaces/<username>/email-support-rl-env
+```
+
+3. Copy the project files into the Space.
+4. Commit and push.
+
+```bash
+git add .
+git commit -m "Deploy project"
+git push
+```
+
+---
+
+# 💬 Example Conversation
+
+### Customer
+
+> I received the wrong product instead of the item I ordered.
+
+### Agent
+
+> We sincerely apologize for the inconvenience. Please share your Order ID so we can verify the issue and arrange a replacement as quickly as possible.
+
+Reward
+
+```text
+0.84
+```
+
+Task Score
+
+```text
+0.91
+```
+
+---
+
+# 🔮 Future Enhancements
+
+- Sentiment-aware rewards
+- Dynamic customer personas
+- LLM-as-a-Judge evaluation
+- Human feedback integration
+- Analytics dashboard
+- Multi-agent evaluation
+- RL fine-tuning support
+
+---
+
+# 🛠 Tech Stack
+
+- Python
+- FastAPI
+- Pydantic
+- HTML
+- CSS
+- JavaScript
+- Docker
+- Pytest
+
+---
+
+# 👩‍💻 Author
+
+**Keerthika M**
+
+GitHub: https://github.com/KeerthyHQ
+
+---
+
+# 📄 License
+
+This project is licensed under the **MIT License**.
